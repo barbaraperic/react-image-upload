@@ -1,8 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import InputBase from './InputBase'
 import logoIcon from '../images/logo.svg'
+
+const Navigation = () => {
+
+  const [image, setImage ] = useState({ preview: '', raw: ''})
+
+  const classes = useStyles();
+
+  const handleUpload = (e) => {
+    setImage({
+      preview: URL.createObjectURL(e.target.files[0]),
+      raw: e.target.files[0]
+     })
+
+    console.log('image', image)
+  }
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.searchItems}>
+        <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
+        <InputBase placeholder="Search by name"className={classes.search}/>
+      </div>
+      <Button className={classes.button} onClick={handleUpload}>Add a photo</Button>
+    </div>
+  )
+}
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -35,20 +61,5 @@ const useStyles = makeStyles(() => ({
     }
   }
 }))
-
-const Navigation = () => {
-
-  const classes = useStyles();
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.searchItems}>
-        <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
-        <InputBase placeholder="Search by name"className={classes.search}/>
-      </div>
-      <Button className={classes.button}>Add a photo</Button>
-    </div>
-  )
-}
 
 export default Navigation

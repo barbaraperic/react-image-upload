@@ -28,13 +28,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/image-upload', (req, res) => {
-  console.log(req.files)
-  const values = Object.values(req.files)
-  const promises = values.map(image => cloudinary.uploader.upload(image.path) )
-  
-  Promise
-    .all(promises)
-    .then(res => res.json(res))
+  const path = Object.values(Object.values(req.files)[0])[0].path
+
+  cloudinary.uploader.upload(path)
+    .then(image => res.json([image]))
+
 })
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

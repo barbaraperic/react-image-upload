@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import InputBase from './InputBase'
@@ -10,13 +11,17 @@ const Navigation = () => {
 
   const classes = useStyles();
 
-  const handleUpload = (e) => {
+  const handleChange = (e) => {
     setImage({
       preview: URL.createObjectURL(e.target.files[0]),
       raw: e.target.files[0]
      })
+  }
+  
+  console.log('image', image)
 
-    console.log('image', image)
+  const handleUpload = () => {
+    axios.post('')
   }
 
   return (
@@ -25,7 +30,8 @@ const Navigation = () => {
         <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
         <InputBase placeholder="Search by name"className={classes.search}/>
       </div>
-      <Button className={classes.button} onClick={handleUpload}>Add a photo</Button>
+      <input type="file" className={classes.input} onChange={handleChange} />
+      <Button type="file" className={classes.button} onClick={handleUpload}>Add a photo</Button>
     </div>
   )
 }

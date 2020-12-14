@@ -1,20 +1,25 @@
-var createError = require('http-errors');
 require('dotenv').config()
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require("cors");
+const createError = require('http-errors');
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const logger = require('morgan');
+const cors = require("cors");
+const formData = require("express-form-data")
+const cloundinary = require('cloundinary')
 
+const app = express();
 
-var testAPI = require('./routes/testAPI');
-
-var app = express();
+cloundinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET
+})
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
+app.use(formData.parse());
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
@@ -22,8 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', testAPI)
-
+app.post('/image/upload', (req, res) => {
+  console.log(req.files)
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

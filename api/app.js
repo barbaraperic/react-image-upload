@@ -22,42 +22,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('images',express.static(path.join(__dirname, 'images')))
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-})
+// cloudinary.config({
+//   cloud_name: process.env.CLOUD_NAME,
+//   api_key: process.env.API_KEY,
+//   api_secret: process.env.API_SECRET
+// })
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-      cb(null, 'images');
-  },
-  filename: (req, file, cb) => {
-      console.log(file);
-      cb(null, Date.now() + path.extname(file.originalname));
-  }
+const upload = multer({
+  dest: path.join(__dirname, 'public/images'),
 });
-
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/png') {
-      cb(null, true);
-  } else {
-      cb(null, false);
-  }
-}
-
-const upload = multer({ storage: storage, fileFilter: fileFilter });
-
-app.post('/image-upload', upload.single('image'), (req, res, next) => {
-  try {
+ 
+app.post('/image-upload', upload.single('avatar'), (req, res, next) => {
     return res.status(201).json({
-        message: 'File uploaded successfully'
-    });
-  } catch (error) {
-      console.error(error);
-  }
+      message: 'File uploaded successfully',
+      data: req.files.avatar
+    })
+})
 
   // cloudinary.uploader.upload(data.image)
   //   .then(res => {
@@ -72,7 +53,7 @@ app.post('/image-upload', upload.single('image'), (req, res, next) => {
   //     })
   //   })
 
-})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

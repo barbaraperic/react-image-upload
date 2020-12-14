@@ -6,11 +6,11 @@ const path = require('path');
 const logger = require('morgan');
 const cors = require("cors");
 const formData = require("express-form-data")
-const cloundinary = require('cloundinary')
+const cloudinary = require('cloudinary')
 
 const app = express();
 
-cloundinary.config({
+cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
@@ -27,8 +27,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/image/upload', (req, res) => {
+app.post('/image-upload', (req, res) => {
   console.log(req.files)
+  const values = Object.values(req.files)
+  const promises = values.map(image => cloudinary.uploader.upload(image.path) )
+  
+  Promise
+    .all(promises)
+    .then(res => res.json(res))
 })
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

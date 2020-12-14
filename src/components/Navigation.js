@@ -21,7 +21,8 @@ const Navigation = () => {
   console.log('image', image)
 
   const handleUpload = () => {
-    axios.post('')
+    axios.post('/image-upload', image)
+      .then(res => console.log('>>>', res))
   }
 
   return (

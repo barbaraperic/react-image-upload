@@ -7,23 +7,31 @@ import logoIcon from '../images/logo.svg'
 
 const Navigation = () => {
 
-  const [image, setImage ] = useState({ preview: '', raw: ''})
+  const [ image, setImage ] = useState(null)
 
   const classes = useStyles();
 
   const handleChange = (e) => {
-    setImage({
-      preview: URL.createObjectURL(e.target.files[0]),
-      raw: e.target.files[0]
-     })
+    // setImage({
+    //   preview: URL.createObjectURL(e.target.files[0]),
+    //   raw: e.target.files[0]
+    //  })
+    setImage(e.target.files[0])
   }
-  
   console.log('image', image)
 
   const handleUpload = () => {
-    axios.post('/image-upload', image)
-      .then(res => console.log('>>>', res))
+    const data = new FormData()
+    data.append('image', image)
+    axios.post('http://localhost:9000/image-upload', data, {
+      headers: {
+        "Content-type": "application/json"
+      }
+    })
+      .then(res => console.log('RES', res))
   }
+
+
 
   return (
     <div className={classes.container}>
@@ -32,7 +40,7 @@ const Navigation = () => {
         <InputBase placeholder="Search by name"className={classes.search}/>
       </div>
       <input type="file" className={classes.input} onChange={handleChange} />
-      <Button type="file" className={classes.button} onClick={handleUpload}>Add a photo</Button>
+      <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
     </div>
   )
 }

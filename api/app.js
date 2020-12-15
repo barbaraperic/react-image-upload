@@ -6,53 +6,53 @@ const path = require('path');
 const logger = require('morgan');
 const cors = require("cors");
 const formData = require("express-form-data")
-const cloudinary = require('cloudinary')
+const bodyParser = require('body-parser');
+// const cloudinary = require('cloudinary')
 const multer = require('multer')
+// const upload = multer({ dest: 'uploads/' })
 
 const app = express();
+
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function(req, file, cb){
+     cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits:{fileSize: 1000000},
+}).single("image");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
-app.use(formData.parse());
+// app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
+// app.use(bodyParser.json({ type: 'application/x-www-form-urlencoded' }))
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(formData.parse());
 app.use(cors());
 app.use(logger('dev'));
-app.use(express.json());
+// app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(cookieParser());
+// app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.post("/image-upload", upload, (req, res) => {
+  console.log("Request file ---", req.files)
+  console.log("Request ---", req.body)
+  console.log("Uploads ---", upload)
+  res.send('file uploaded')
+})
+
 
 // cloudinary.config({
 //   cloud_name: process.env.CLOUD_NAME,
 //   api_key: process.env.API_KEY,
 //   api_secret: process.env.API_SECRET
 // })
-
-const upload = multer({
-  dest: path.join(__dirname, 'public/images'),
-});
- 
-app.post('/image-upload', upload.single('avatar'), (req, res, next) => {
-    return res.status(201).json({
-      message: 'File uploaded successfully',
-      data: req.files.avatar
-    })
-})
-
-  // cloudinary.uploader.upload(data.image)
-  //   .then(res => {
-  //     res.status(200).send({ 
-  //       message: "successful upload",
-  //       res
-  //     }).catch(err => {
-  //       res.status(500).send({
-  //         message: "Error", 
-  //         err
-  //       })
-  //     })
-  //   })
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

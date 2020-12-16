@@ -48,11 +48,9 @@ app.post("/image-upload", upload, (req, res) => {
   if (req.file) {
     const url = req.file.path;
     return cloudinary.uploader.upload(url).then((result) => {
-      console.log('res', result)
-      const image = result.url
       return res.status(200).json({
         message: 'Your image has been uploaded successfully',
-        data: { image }
+        result,
       })
     }).catch(err => {
       console.error(err)

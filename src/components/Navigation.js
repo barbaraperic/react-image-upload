@@ -8,17 +8,13 @@ import logoIcon from '../images/logo.svg'
 const Navigation = () => {
 
   const [ image, setImage ] = useState(null)
+  const [ newImages, setNewImages ] = useState([])
 
   const classes = useStyles();
 
   const handleChange = (e) => {
-    // setImage({
-    //   preview: URL.createObjectURL(e.target.files[0]),
-    //   raw: e.target.files[0]
-    //  })
     setImage(e.target.files[0])
   }
-  console.log('image', image)
 
   const handleUpload = () => {
     const data = new FormData()
@@ -28,20 +24,35 @@ const Navigation = () => {
         "Content-type": "application/json"
       }
     })
-      .then(res => console.log('RES', res))
+      .then(res => {
+        const image = res.data.result
+        setNewImages(state => [...state, image])
+      })
   }
 
-
-
   return (
-    <div className={classes.container}>
-      <div className={classes.searchItems}>
-        <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
-        <InputBase placeholder="Search by name"className={classes.search}/>
+    <React.Fragment>
+      <div className={classes.container}>
+        <div className={classes.searchItems}>
+          <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
+          <InputBase placeholder="Search by name"className={classes.search}/>
+        </div>
+        <input type="file" className={classes.input} onChange={handleChange} />
+        <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
       </div>
-      <input type="file" className={classes.input} onChange={handleChange} />
-      <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
-    </div>
+      <div>
+        {newImages && (
+          newImages.map((image, i) => (
+            <img 
+              key={i}
+              src={image.url} 
+              alt={image.original_filename}
+              className={classes.image}
+            />
+          ))
+        )}
+      </div>
+    </React.Fragment>
   )
 }
 
@@ -74,6 +85,12 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       backgroundColor: '#37bf6e',
     }
+  },
+  image: {
+    width: '200px',
+    height: '200px',
+    objectFit: 'cover',
+    margin: '8px'
   }
 }))
 

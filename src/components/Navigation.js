@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import InputBase from './InputBase'
 import logoIcon from '../images/logo.svg'
+import Masonry from 'react-masonry-css'
+
 
 const Navigation = () => {
 
@@ -40,18 +42,22 @@ const Navigation = () => {
         <input type="file" className={classes.input} onChange={handleChange} />
         <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
       </div>
-      <div>
+      <Masonry
+        breakpointCols={3}
+        className={classes.myMasonryGrid}
+        columnClassName={classes.myMasonryGridColumn}
+      >
         {newImages && (
-          newImages.map((image, i) => (
-            <img 
-              key={i}
-              src={image.url} 
-              alt={image.original_filename}
-              className={classes.image}
-            />
-          ))
-        )}
-      </div>
+            newImages.map((image, i) => (
+              <img 
+                key={i}
+                src={image.url} 
+                alt={image.original_filename}
+                className={classes.image}
+              />
+            ))
+          )}
+      </Masonry>
     </React.Fragment>
   )
 }
@@ -91,6 +97,16 @@ const useStyles = makeStyles(() => ({
     height: '200px',
     objectFit: 'cover',
     margin: '8px'
+  },
+  myMasonryGrid: {
+    display: "-webkit-box", /* Not needed if autoprefixing */
+    display: 'flex',
+    marginLeft: '-30px', /* gutter size offset */
+    width: 'auto'
+  },
+  myMasonryGridColumn: {
+    paddingLeft: '30px', /* gutter size */
+    backgroundClip: 'paddingBox'
   }
 }))
 

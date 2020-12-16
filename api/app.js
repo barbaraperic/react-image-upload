@@ -16,7 +16,7 @@ const app = express();
 const storage = multer.diskStorage({
   destination: "./public/uploads/",
   filename: function(req, file, cb){
-     cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
+     cb(null,"IMAGE-" + path.extname(file.originalname));
   }
 });
 
@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 app.post("/image-upload", upload, (req, res) => {
-  console.log("Request file ---", req.files)
+  console.log("Request file ---", req.file)
   console.log("Request ---", req.body)
   console.log("Uploads ---", upload)
   res.send('file uploaded')

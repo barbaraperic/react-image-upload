@@ -6,6 +6,7 @@ const logger = require('morgan');
 const cors = require("cors");
 const cloudinary = require('cloudinary')
 const multer = require('multer')
+const axios = require('axios');
 // const cookieParser = require('cookie-parser');
 // const formData = require("express-form-data")
 // const bodyParser = require('body-parser');
@@ -43,6 +44,17 @@ cloudinary.config({
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
 })
+
+app.get("/images", (req, res, next) => {
+  cloudinary.v2.api.resources(
+    { type: 'upload', max_results: 10 }, 
+    (error, result) => {
+      console.log(result, error); 
+      res.status(200).send({
+        result
+      })
+    });
+  })
 
 app.post("/image-upload", upload, (req, res) => {
   if (req.file) {

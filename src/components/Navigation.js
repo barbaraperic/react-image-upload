@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import InputBase from './InputBase'
 import logoIcon from '../images/logo.svg'
-import Masonry from 'react-masonry-css'
-import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 
 
 const Navigation = () => {
 
   const [ image, setImage ] = useState(null)
   const [ newImages, setNewImages ] = useState([])
+  const [ images, setImages ] = useState()
+  const [ error, setError ] = useState(false)
+  const [ message, setMessage ] = useState('')
 
   const classes = useStyles();
+
+  useEffect(() => {
+    axios.get('/images').then(result => {
+      setImages(result)
+    }).catch(error => {
+      setError(true)
+      setMessage(error)
+    })
+  }, [])
 
   const handleChange = (e) => {
     setImage(e.target.files[0])
@@ -36,9 +46,6 @@ const Navigation = () => {
     })
   }
 
-  console.log('newimages', newImages)
-  newImages.map(image => console.log('IMAGES',image.asset_id))
-
   return (
     <React.Fragment>
       <div className={classes.container}>
@@ -49,21 +56,19 @@ const Navigation = () => {
         <input type="file" className={classes.input} onChange={handleChange} />
         <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
       </div>
-      <Masonry
-        breakpointCols={3}
-        className={classes.myMasonryGrid}
-        columnClassName={classes.myMasonryGridColumn}
+      <div className={classes.grid}
       >
-        {newImages && (
-          newImages.map((image, i) => (
-            <CloudinaryContext cloudName="demo" key={i}>
-                <Image publicId={image.public_id}>
-                    <Transformation width="200" crop="scale" angle="10"/>
-                </Image>
-            </CloudinaryContext>
+        {images && (
+          images.data.result.resources.map((image, i) => (
+            <img 
+              src={image.url} 
+              alt={image.resource_type} 
+              key={i}
+              className={classes.gridItem}
+            />
           ))
         )}
-      </Masonry>
+      </div>
     </React.Fragment>
   )
 }
@@ -98,21 +103,20 @@ const useStyles = makeStyles(() => ({
       backgroundColor: '#37bf6e',
     }
   },
-  image: {
-    width: '200px',
-    height: '200px',
+  grid: {
+    padding: '16px',
+    display: 'grid',
+    gridGap: '10px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(250px,1fr))',
+  },
+  gridItem: {
+    float: 'left',
+    width: '260px',
+    height: '160px',
+    borderRadius: '8px',
     objectFit: 'cover',
-    margin: '8px'
+    filter: 'grayscale(100%)',
   },
-  myMasonryGrid: {
-    display: 'flex',
-    marginLeft: '-30px', /* gutter size offset */
-    width: 'auto'
-  },
-  myMasonryGridColumn: {
-    paddingLeft: '30px', /* gutter size */
-    backgroundClip: 'paddingBox'
-  }
 }))
 
 export default Navigation

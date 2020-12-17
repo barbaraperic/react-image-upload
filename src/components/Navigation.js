@@ -5,7 +5,6 @@ import Button from './Button'
 import InputBase from './InputBase'
 import logoIcon from '../images/logo.svg'
 
-
 const Navigation = () => {
 
   const [ image, setImage ] = useState(null)
@@ -23,7 +22,7 @@ const Navigation = () => {
       setError(true)
       setMessage(error)
     })
-  }, [])
+  }, [images])
 
   const handleChange = (e) => {
     setImage(e.target.files[0])
@@ -43,6 +42,8 @@ const Navigation = () => {
         ...prevState,
         image
       ]))
+    }).catch(error => {
+      console.error(error)
     })
   }
 

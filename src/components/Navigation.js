@@ -5,6 +5,7 @@ import Button from './Button'
 import InputBase from './InputBase'
 import logoIcon from '../images/logo.svg'
 import Masonry from 'react-masonry-css'
+import { Image, CloudinaryContext, Transformation } from 'cloudinary-react';
 
 
 const Navigation = () => {
@@ -26,11 +27,17 @@ const Navigation = () => {
         "Content-type": "application/json"
       }
     })
-      .then(res => {
-        const image = res.data.result
-        setNewImages(state => [...state, image])
-      })
+    .then(res => {
+      const image = res.data.result
+      setNewImages(prevState => ([
+        ...prevState,
+        image
+      ]))
+    })
   }
+
+  console.log('newimages', newImages)
+  newImages.map(image => console.log('IMAGES',image.asset_id))
 
   return (
     <React.Fragment>
@@ -48,15 +55,14 @@ const Navigation = () => {
         columnClassName={classes.myMasonryGridColumn}
       >
         {newImages && (
-            newImages.map((image, i) => (
-              <img 
-                key={i}
-                src={image.url} 
-                alt={image.original_filename}
-                className={classes.image}
-              />
-            ))
-          )}
+          newImages.map((image, i) => (
+            <CloudinaryContext cloudName="demo" key={i}>
+                <Image publicId={image.public_id}>
+                    <Transformation width="200" crop="scale" angle="10"/>
+                </Image>
+            </CloudinaryContext>
+          ))
+        )}
       </Masonry>
     </React.Fragment>
   )
@@ -99,7 +105,6 @@ const useStyles = makeStyles(() => ({
     margin: '8px'
   },
   myMasonryGrid: {
-    display: "-webkit-box", /* Not needed if autoprefixing */
     display: 'flex',
     marginLeft: '-30px', /* gutter size offset */
     width: 'auto'

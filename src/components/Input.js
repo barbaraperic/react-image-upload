@@ -10,6 +10,7 @@ const Input = (props) => {
     helperText,
     className, 
     variant, 
+    placeholder,
     onChange } = props
 
   const classes = useStyles();
@@ -19,6 +20,7 @@ const Input = (props) => {
       id={id} 
       label={label}
       helperText={helperText}
+      placeholder={placeholder}
       variant={variant}
       className={`${classes.input} ${className}`}
       onChange={onChange}
@@ -28,7 +30,7 @@ const Input = (props) => {
 
 const useStyles = makeStyles(() => ({
   input: {
-    width: '200px',
+    width: '300px',
     margin: '8px'
   }
 }))
@@ -37,6 +39,7 @@ Input.defaultProps = {
   id: '',
   label: '',
   helperText: '',
+  placeholder: '',
   variant: 'outlined',
   className: '',
   onChange: () => {}

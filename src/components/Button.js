@@ -22,6 +22,7 @@ const Button = (props) => {
     variant,
     className,
     disabled,
+    type,
     onClick,
     children
   } = props
@@ -32,6 +33,7 @@ const Button = (props) => {
       variant={variant}
       className={`${classes.button} ${className}`}
       disabled={disabled}
+      type={type}
       onClick={onClick}
     >
       {children}
@@ -51,8 +53,9 @@ Button.defaultProps = {
 Button.propTypes = {
   variant: PropTypes.string,
   className: PropTypes.string,
+  type: PropTypes.string,
   disabled: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node

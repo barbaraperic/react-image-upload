@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MuiModal from '@material-ui/core/Modal';
-import Form from './Form'
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -19,23 +18,19 @@ function getModalStyle() {
   };
 }
 
-const Modal = ({ open, onClose }) => {
+const Modal = ({ open, onClose, children }) => {
   const classes = useStyles();
 
   const [modalStyle] = React.useState(getModalStyle);
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <Form />
-    </div>
-  );
 
   return (
     <MuiModal
       open={open}
       onClose={onClose}
     >
-      {body}
+      <div style={modalStyle} className={classes.paper}>
+        {children}
+      </div>
     </MuiModal>
   );
 }

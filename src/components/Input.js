@@ -30,8 +30,8 @@ const Input = (props) => {
 
 const useStyles = makeStyles(() => ({
   input: {
-    width: '300px',
-    marginTop: '8px'
+    width: '350px',
+    margin: '12px 0'
   }
 }))
 

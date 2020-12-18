@@ -4,25 +4,30 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import Search from './Search'
 import Modal from './Modal'
-import Input from './Input'
+import Form from './Form'
 import logoIcon from '../images/logo.svg'
 
 const Navigation = () => {
 
+  // const [ image, setImage ] = useState(null)
+  // const [ newImages, setNewImages ] = useState([])
+  const [ images, setImages ] = useState()
+  // const [ error, setError ] = useState(false)
+  // const [ message, setMessage ] = useState('')
   const [ open, setOpen ] = useState(false);
   const [ label, setLabel ] = useState('')
   const [ url, setUrl ] = useState('')
 
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   axios.get('/images').then(result => {
-  //     setImages(result)
-  //   }).catch(error => {
-  //     // setError(true)
-  //     // setMessage(error)
-  //   })
-  // }, [images])
+  useEffect(() => {
+    axios.get('/images').then(result => {
+      setImages(result)
+    }).catch(error => {
+      // setError(true)
+      // setMessage(error)
+    })
+  }, [images])
 
   
   const handleOpen = () => {
@@ -33,11 +38,32 @@ const Navigation = () => {
     setOpen(false);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('/image-save', {
+  // const handleChange = (e) => {
+  //   setImage(e.target.files[0])
+  // }
 
-    })
+  // const handleUpload = () => {
+  //   const data = new FormData()
+  //   data.append('image', image)
+  //   axios.post('http://localhost:9000/image-upload', data, {
+  //     headers: {
+  //       "Content-type": "application/json"
+  //     }
+  //   })
+  //   .then(res => {
+  //     console.log(res)
+  //     const image = res.data.result
+  //     setNewImages(prevState => ([
+  //       ...prevState,
+  //       image
+  //     ]))
+  //   }).catch(error => {
+  //     console.error(error)
+  //   })
+  // }
+
+  const handleSubmit = (e) => {
+    console.log(e)
   }
 
   return (
@@ -47,16 +73,28 @@ const Navigation = () => {
           <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
           <Search placeholder="Search by name"className={classes.search} />
         </div>
+        {/* <input type="file" className={classes.input} onChange={handleChange} style={{display: 'none'}}/> */}
         <Button onClick={handleOpen}>Add a photo</Button>
       </div>
-      <div className={classes.grid}>
+      <div className={classes.grid}
+      >
+        {/* {images && (
+          images.data.result.resources.map((image, i) => (
+            <img 
+              src={image.url} 
+              alt={image.resource_type} 
+              key={i}
+              className={classes.gridItem}
+            />
+          ))
+        )} */}
       </div>
        <Modal open={open} onClose={handleClose}>
         <form onSubmit={handleSubmit}>
           <p style={{color: '#757575'}}>Add a new photo</p>
             <Input label="Label" onChange={(e) => setLabel(e.target.value)}/>
             <Input label="Photo URL" onChange={(e) => setUrl(e.target.value)}/>
-          <div style={{ textAlign: 'end'}}>
+          <div className={classes.buttons}>
             <Button type="submit">Submit</Button>
           </div>
         </form>

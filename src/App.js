@@ -1,14 +1,14 @@
 import './App.css';
-import Modal from './components/Modal'
+// import Modal from './components/Modal'
 // import Form from './components/Form'
-// import Navigation from './components/Navigation'
+import Navigation from './components/Navigation'
 
 function App() {
   return (
     <div>
-      {/* <Navigation /> */}
+      <Navigation />
       {/* <Form /> */}
-      <Modal />
+      {/* <Modal /> */}
     </div>
   );
 }

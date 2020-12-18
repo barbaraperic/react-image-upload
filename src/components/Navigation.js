@@ -3,6 +3,7 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
 import Search from './Search'
+import Modal from './Modal'
 import logoIcon from '../images/logo.svg'
 
 const Navigation = () => {
@@ -12,8 +13,17 @@ const Navigation = () => {
   const [ images, setImages ] = useState()
   const [ error, setError ] = useState(false)
   const [ message, setMessage ] = useState('')
+  const [ open, setOpen ] = React.useState(false);
 
   const classes = useStyles();
+  
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     axios.get('/images').then(result => {
@@ -56,7 +66,8 @@ const Navigation = () => {
           <Search placeholder="Search by name"className={classes.search} />
         </div>
         <input type="file" className={classes.input} onChange={handleChange} style={{display: 'none'}}/>
-        <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
+        {/* <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button> */}
+        <Button onClick={handleOpen}>Add a photo</Button>
       </div>
       <div className={classes.grid}
       >
@@ -71,6 +82,7 @@ const Navigation = () => {
           ))
         )}
       </div>
+       <Modal open={open} onClose={handleClose}/>
     </React.Fragment>
   )
 }

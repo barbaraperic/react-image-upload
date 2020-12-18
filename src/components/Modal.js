@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MuiModal from '@material-ui/core/Modal';
-import Button from './Button'
 import Form from './Form'
 
 function rand() {
@@ -20,6 +19,27 @@ function getModalStyle() {
   };
 }
 
+const Modal = ({ open, onClose }) => {
+  const classes = useStyles();
+
+  const [modalStyle] = React.useState(getModalStyle);
+
+  const body = (
+    <div style={modalStyle} className={classes.paper}>
+      <Form />
+    </div>
+  );
+
+  return (
+    <MuiModal
+      open={open}
+      onClose={onClose}
+    >
+      {body}
+    </MuiModal>
+  );
+}
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
@@ -30,42 +50,5 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
 }));
-
-const Modal = () => {
-  const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <Form />
-    </div>
-  );
-
-  return (
-    <div>
-      <Button type="button" onClick={handleOpen}>
-        Add a picture
-      </Button>
-      <MuiModal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {body}
-      </MuiModal>
-    </div>
-  );
-}
 
 export default Modal

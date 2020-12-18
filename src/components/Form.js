@@ -9,11 +9,9 @@ const Form = () => {
 
   return (
     <form >
-      <p style={{textAlign: 'center', color: '#757575'}}>Add a new photo</p>
-      <div className={classes.inputs}>
+      <p style={{color: '#757575'}}>Add a new photo</p>
         <Input label="Label" />
         <Input label="Photo URL" />
-      </div>
       <div className={classes.buttons}>
         <Button>Submit</Button>
       </div>
@@ -22,13 +20,6 @@ const Form = () => {
 }
 
 const useStyles = makeStyles(() => ({
-  form: {
-    margin: 'auto',
-    width: '50%',
-    border: '1px solid green',
-    padding: '10px',
-    borderRadius: '8px'
-  },
   inputs: {
     display: 'grid',
     textAlign: 'center'

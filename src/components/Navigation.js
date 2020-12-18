@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
-import InputBase from './InputBase'
+import Search from './Search'
 import logoIcon from '../images/logo.svg'
 
 const Navigation = () => {
@@ -37,6 +37,7 @@ const Navigation = () => {
       }
     })
     .then(res => {
+      console.log(res)
       const image = res.data.result
       setNewImages(prevState => ([
         ...prevState,
@@ -52,9 +53,9 @@ const Navigation = () => {
       <div className={classes.container}>
         <div className={classes.searchItems}>
           <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
-          <InputBase placeholder="Search by name"className={classes.search}/>
+          <Search placeholder="Search by name"className={classes.search} />
         </div>
-        <input type="file" className={classes.input} onChange={handleChange} />
+        <input type="file" className={classes.input} onChange={handleChange} style={{display: 'none'}}/>
         <Button type="submit" className={classes.button} onClick={handleUpload}>Add a photo</Button>
       </div>
       <div className={classes.grid}
@@ -93,16 +94,6 @@ const useStyles = makeStyles(() => ({
   },
   logo: {
     marginRight: '16px'
-  },
-  button: {
-    backgroundColor: '#3DB46D',
-    textTransform: 'none',
-    color: 'white',
-    fontWeight: 700,
-    borderRadius: '12px',
-    '&:hover': {
-      backgroundColor: '#37bf6e',
-    }
   },
   grid: {
     padding: '16px',

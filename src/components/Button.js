@@ -4,10 +4,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import MuiButton from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+  button: {
+    backgroundColor: '#3DB46D',
+    textTransform: 'none',
+    color: 'white',
+    fontWeight: 700,
+    borderRadius: '8px',
+    margin: '8px',
+    '&:hover': {
+      backgroundColor: '#37bf6e',
+    }
   },
 }));
 

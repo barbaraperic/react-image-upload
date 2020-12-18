@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const InputBase = ({ placeholder }) => {
+const Search = ({ placeholder }) => {
   const classes = useStyles();
 
   return (
@@ -41,4 +41,4 @@ const InputBase = ({ placeholder }) => {
   );
 }
 
-export default InputBase
+export default Search

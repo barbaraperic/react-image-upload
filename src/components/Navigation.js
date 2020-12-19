@@ -35,9 +35,11 @@ const Navigation = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    axios.post('/image-save', {
-
-    })
+    setOpen(false);
+    axios.post('/image-upload', {
+      label,
+      url
+    }).then(res => {console.log('>>', res)})
   }
 
   return (

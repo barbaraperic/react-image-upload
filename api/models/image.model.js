@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const imageSchema = new mongoose.Schema ({
   label: {
     type: String, 
-    required: true,
+    // required: true,
     trim: true
   },
   url: {
     type: String,
-    required: true
+    // required: true
   },
 },
   { timestamp: true }

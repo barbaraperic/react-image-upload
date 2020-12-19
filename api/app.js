@@ -4,11 +4,15 @@ const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cors = require("cors");
+const connect = require('./utils/db')
+const dbConfig = require('./config/db.config')
+const controller = require('./controllers/image.controller')
+
 // const cloudinary = require('cloudinary')
 // const multer = require('multer')
 // const cookieParser = require('cookie-parser');
 // const formData = require("express-form-data")
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -30,9 +34,8 @@ app.set('view engine', 'jade');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
-// app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }))
-// app.use(bodyParser.json({ type: 'application/x-www-form-urlencoded' }))
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())
 // app.use(formData.parse());
 // app.use(express.json());
 // app.use(cookieParser());
@@ -44,13 +47,25 @@ app.use(express.urlencoded({ extended: false }));
 //   api_secret: process.env.API_SECRET
 // })
 
-app.post("/image-save", (req, res) => {
-  const { label, url } = req.body
-  return res.status(200).send({
-    label,
-    url
-  })
+// require('./routes/image.routes')(app)
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Headers",
+    "x-access-token, Origin, Content-Type, Accept"
+  )
+  next()
 })
+
+app.post('/image-upload', controller.upload)
+
+
+// app.post("/image-save", (req, res) => {
+//   const { label, url } = req.body
+//   return res.status(200).send({
+//     label,
+//     url
+//   })
+// })
 
 // app.get("/images", (req, res, next) => {
 //   cloudinary.v2.api.resources(
@@ -95,5 +110,12 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)
+  .then(() => app.listen(5000, () => {
+    console.log('server on http://localhost:5000')
+  }))
+  .catch(e => console.error(e))
+
 
 module.exports = app;

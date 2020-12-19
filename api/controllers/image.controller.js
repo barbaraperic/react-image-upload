@@ -6,8 +6,6 @@ exports.upload = (req, res) => {
     url: req.body.url
   })
 
-  console.log('image', image.label)
-
   image.save((err, image) => {
     if (err) {
       return res.status(500).send({ message: 'Error', err })
@@ -15,5 +13,11 @@ exports.upload = (req, res) => {
 
   res.status(200).send({ message: 'Upload successful', image})
   
+  })
+}
+
+exports.getImages = (req, res) => {
+    Image.find({}).then( images => {
+    res.send(images)
   })
 }

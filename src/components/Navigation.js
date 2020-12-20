@@ -74,18 +74,20 @@ const Navigation = () => {
           </div>
         </form>
        </Modal>
-       <div style={{display: 'flex', width: '80%', margin: 'auto'}}>
-         {images && (
-           images.data.map((image, index) => (
-             <img 
-              src={image.url} 
-              alt={image.label} 
-              key={index}
-              className={classes.image}
-              style={{ width: '200px', height: '200px'}}
-            />
-           ))
-         )}
+       <div className={classes.layout}>
+          <div>
+            {images && (
+              images.data.map((image, index) => (
+                <img 
+                  src={image.url} 
+                  alt={image.label} 
+                  key={index}
+                  className={classes.image}
+                  style={{ width: '200px', height: '200px'}}
+                />
+              ))
+            )}
+          </div>
        </div>
 
     </React.Fragment>
@@ -112,23 +114,24 @@ const useStyles = makeStyles(() => ({
   logo: {
     marginRight: '16px'
   },
-  grid: {
-    padding: '16px',
-    display: 'grid',
-    gridGap: '10px',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(250px,1fr))',
-  },
-  gridItem: {
-    float: 'left',
-    width: '260px',
-    height: '160px',
-    borderRadius: '8px',
-    objectFit: 'cover',
-    filter: 'grayscale(100%)',
+  layout: {
+    margin: '24px',
+    columns: '6 200px',
+    columnGap: '1rem',
+    div: {
+      width: '150px',
+      background: '#EC985A',
+      color: 'white',
+      margin: '0 1rem 1rem 0',
+      display: 'inline-block',
+      // width: '100%',
+      textAlign: 'center',
+      fontFamily: 'system-ui',
+      fontWeight: '900',
+      fontSize: '2rem'
+    }
   },
   image: {
-    width: '200px',
-    height: '200px',
     objectFit: 'cover',
     borderRadius: '8px'
   }

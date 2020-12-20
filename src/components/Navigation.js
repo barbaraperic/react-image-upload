@@ -12,17 +12,24 @@ const Navigation = () => {
   const [ open, setOpen ] = useState(false);
   const [ label, setLabel ] = useState('')
   const [ url, setUrl ] = useState('')
+  const [ images, setImages ] = useState([])
+  const [ error, setError ] = useState('')
+  const [ loading, setLoading ] = useState(true)
 
   const classes = useStyles();
 
-  // useEffect(() => {
-  //   axios.get('/images').then(result => {
-  //     setImages(result)
-  //   }).catch(error => {
-  //     // setError(true)
-  //     // setMessage(error)
-  //   })
-  // }, [images])
+  useEffect(() => {
+    axios.get('/images').then(result => {
+      setImages(result)
+      setLoading(false)
+    }).catch(error => {
+      setError(true)
+    })
+  }, [])
+
+  console.log('>>>', images)
+
+  // images.map(image=> console.log('aa',image.data))
 
   
   const handleOpen = () => {
@@ -40,6 +47,10 @@ const Navigation = () => {
       label,
       url
     }).then(res => {console.log('>>', res)})
+  }
+
+  if(loading) {
+    return <p>Loading</p>
   }
 
   return (
@@ -63,6 +74,20 @@ const Navigation = () => {
           </div>
         </form>
        </Modal>
+       <div style={{display: 'flex', width: '80%', margin: 'auto'}}>
+         {images && (
+           images.data.map((image, index) => (
+             <img 
+              src={image.url} 
+              alt={image.label} 
+              key={index}
+              className={classes.image}
+              style={{ width: '200px', height: '200px'}}
+            />
+           ))
+         )}
+       </div>
+
     </React.Fragment>
   )
 }
@@ -101,6 +126,12 @@ const useStyles = makeStyles(() => ({
     objectFit: 'cover',
     filter: 'grayscale(100%)',
   },
+  image: {
+    width: '200px',
+    height: '200px',
+    objectFit: 'cover',
+    borderRadius: '8px'
+  }
 }))
 
 export default Navigation

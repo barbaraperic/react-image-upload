@@ -16,7 +16,7 @@ app.set('view engine', 'jade');
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
@@ -30,6 +30,8 @@ app.use((req, res, next) => {
 app.post('/image-upload', controller.upload)
 
 app.get('/images', controller.getImages)
+
+app.delete('/image-delete', controller.deleteImage)
 
 // catch 404 and forward to error handler
 

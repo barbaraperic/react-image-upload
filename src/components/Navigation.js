@@ -26,11 +26,6 @@ const Navigation = () => {
       setError(true)
     })
   }, [])
-
-  console.log('>>>', images)
-
-  // images.map(image=> console.log('aa',image.data))
-
   
   const handleOpen = () => {
     setOpen(true);
@@ -47,6 +42,18 @@ const Navigation = () => {
       label,
       url
     }).then(res => {console.log('>>', res)})
+  }
+
+  const handleDeleteImage = (e) => {
+    const _id = e.target.getAttribute("data-id")
+    axios.delete('/image-delete', {
+      data:  {data: _id}
+    }).then(res => {
+      console.log('DEL', res)
+    }).catch(error => {
+      throw error
+    })
+    // useEffect()
   }
 
   if(loading) {
@@ -75,21 +82,22 @@ const Navigation = () => {
         </form>
        </Modal>
        <div className={classes.layout}>
-          <div>
-            {images && (
-              images.data.map((image, index) => (
-                <img 
-                  src={image.url} 
-                  alt={image.label} 
-                  key={index}
-                  className={classes.image}
-                  style={{ width: '200px', height: '200px'}}
-                />
-              ))
-            )}
-          </div>
+        {images && (
+          images.data.map((image, index) => (
+            <div key={index} className={classes.gridItem}>
+              <button data-id={image._id} className={classes.button} onClick={handleDeleteImage}>Delete</button>
+              <img 
+                src={image.url} 
+                alt={image.label}
+                key={index}
+                className={classes.image}
+                style={{ width: '200px', height: '200px'}}
+              />
+              <p className={classes.label}>{image.label}</p>
+            </div>
+          )) 
+        )}
        </div>
-
     </React.Fragment>
   )
 }
@@ -131,9 +139,35 @@ const useStyles = makeStyles(() => ({
       fontSize: '2rem'
     }
   },
+  gridItem: {
+    position: 'relative',
+    width: '200px', 
+    height: '200px'
+  },
+  button: {
+    position: 'absolute',
+    top: '9px',
+    left: '138px',
+    borderRadius: '8px',
+    backgroundColor: 'transparent',
+    color: 'red',
+    border: '1px solid',
+    fontWeight: '500',
+    display: '',
+    cursor: 'pointer',
+  },
+  label: {
+    position: 'absolute',
+    bottom: '-6px',
+    left: '8px',
+    textShadow: '1px 1px #888888'
+  },
   image: {
     objectFit: 'cover',
-    borderRadius: '8px'
+    borderRadius: '8px',
+    '&:hover .button': {
+      opacity: '0.5'
+    } 
   }
 }))
 

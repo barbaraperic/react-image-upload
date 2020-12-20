@@ -21,3 +21,13 @@ exports.getImages = (req, res) => {
     res.send(images)
   })
 }
+
+exports.deleteImage = (req, res) => {
+  const id = req.body.data
+  Image.deleteOne({ _id: id}, (err) => {
+    if (err)
+      throw err;
+    else 
+      res.send({ message: 'is deleted'});
+  })
+}

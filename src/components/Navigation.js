@@ -13,8 +13,9 @@ const Navigation = () => {
   const [ label, setLabel ] = useState('')
   const [ url, setUrl ] = useState('')
   const [ images, setImages ] = useState([])
-  const [ error, setError ] = useState('')
+  const [ error, setError ] = useState(false)
   const [ loading, setLoading ] = useState(true)
+  const [ render, setRender ] = useState(false)
 
   const classes = useStyles();
 
@@ -25,7 +26,7 @@ const Navigation = () => {
     }).catch(error => {
       setError(true)
     })
-  }, [])
+  }, [render])
   
   const handleOpen = () => {
     setOpen(true);
@@ -35,13 +36,20 @@ const Navigation = () => {
     setOpen(false);
   };
 
+  console.log('first', images)
+
   const handleSubmit = (e) => {
     e.preventDefault()
     setOpen(false);
     axios.post('/image-upload', {
       label,
       url
-    }).then(res => {console.log('>>', res)})
+    }).then(res => {
+      setRender((prevState) => !prevState)
+      // setLoading(false)
+      // window.location.reload()
+      console.log('second', images)
+    })
   }
 
   const handleDeleteImage = (e) => {
@@ -49,11 +57,10 @@ const Navigation = () => {
     axios.delete('/image-delete', {
       data:  {data: _id}
     }).then(res => {
-      console.log('DEL', res)
+      setRender((prevState) => !prevState)
     }).catch(error => {
       throw error
     })
-    // useEffect()
   }
 
   if(loading) {
@@ -123,26 +130,15 @@ const useStyles = makeStyles(() => ({
     marginRight: '16px'
   },
   layout: {
-    margin: '24px',
-    columns: '6 200px',
-    columnGap: '1rem',
-    div: {
-      width: '150px',
-      background: '#EC985A',
-      color: 'white',
-      margin: '0 1rem 1rem 0',
-      display: 'inline-block',
-      // width: '100%',
-      textAlign: 'center',
-      fontFamily: 'system-ui',
-      fontWeight: '900',
-      fontSize: '2rem'
-    }
+    display: 'grid',
+    gridTemplateRows: 'auto',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(12rem, 1fr))',
+    gap: '1rem',
   },
   gridItem: {
+    width: '100%',
+    maxWidth: '16rem',
     position: 'relative',
-    width: '200px', 
-    height: '200px'
   },
   button: {
     position: 'absolute',

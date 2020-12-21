@@ -16,6 +16,7 @@ const Navigation = () => {
   const [ error, setError ] = useState(false)
   const [ loading, setLoading ] = useState(true)
   const [ render, setRender ] = useState(false)
+  const [ search, setSearch ] = useState('')
 
   const classes = useStyles();
 
@@ -62,12 +63,19 @@ const Navigation = () => {
     return <p>Loading</p>
   }
 
+  console.log('search', search)
+
   return (
     <React.Fragment>
       <div className={classes.container}>
         <div className={classes.searchItems}>
           <img src={logoIcon} alt="logoIcon" className={classes.logo}/>
-          <Search placeholder="Search by name"className={classes.search} />
+          <Search 
+            placeholder="Search by label"
+            className={classes.search} 
+            onChange={(e) => setSearch(e.target.value)}
+            value={search}
+          />
         </div>
         <Button onClick={handleOpen}>Add a photo</Button>
       </div>
@@ -134,6 +142,7 @@ const useStyles = makeStyles(() => ({
   layout: {
     display: 'grid',
     gridTemplateRows: 'auto',
+    margin: '24px',
     gridTemplateColumns: 'repeat(auto-fill, minmax(12rem, 1fr))',
     gap: '1rem',
   },

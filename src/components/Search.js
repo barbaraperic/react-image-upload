@@ -5,6 +5,25 @@ import MuiInputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 
+const Search = ({ placeholder, onChange, value }) => {
+  const classes = useStyles();
+
+  return (
+    <Paper component="form" className={classes.root}>
+      <IconButton type="submit" className={classes.iconButton} aria-label="search">
+        <SearchIcon />
+      </IconButton>
+      <MuiInputBase
+        className={classes.input}
+        placeholder={placeholder}
+        onChange={onChange}
+        value={value}
+        inputProps={{ 'aria-label': 'search google maps' }}
+      />
+    </Paper>
+  );
+}
+
 const useStyles = makeStyles(() => ({
   root: {
     padding: '2px 4px',
@@ -24,22 +43,5 @@ const useStyles = makeStyles(() => ({
     color: '#BDBDBD'
   },
 }));
-
-const Search = ({ placeholder }) => {
-  const classes = useStyles();
-
-  return (
-    <Paper component="form" className={classes.root}>
-      <IconButton type="submit" className={classes.iconButton} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-      <MuiInputBase
-        className={classes.input}
-        placeholder={placeholder}
-        inputProps={{ 'aria-label': 'search google maps' }}
-      />
-    </Paper>
-  );
-}
 
 export default Search

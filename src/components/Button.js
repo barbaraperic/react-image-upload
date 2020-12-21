@@ -6,6 +6,7 @@ import MuiButton from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   button: {
     backgroundColor: '#3DB46D',
+    fontFamily: 'Poppins',
     textTransform: 'none',
     color: 'white',
     fontWeight: 700,

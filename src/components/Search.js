@@ -13,10 +13,11 @@ const useStyles = makeStyles(() => ({
     width: 300,
     boxShadow: 'none',
     border: '1px solid #BDBDBD',
-    borderRadius: '12px'
+    borderRadius: '12px',
   },
   input: {
     flex: 1,
+    fontFamily: 'Poppins'
   },
   iconButton: {
     padding: 10,

@@ -144,11 +144,10 @@ const useStyles = makeStyles(() => ({
     '&:hover': {
       '& $button': {
         display: 'block !important',
-        transition: 'width 2s linear 1s'
+
       },
       '& $label': {
         display: 'block !important',
-        transition: 'width 2s linear 1s'
       }
     }
   },

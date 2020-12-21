@@ -36,8 +36,6 @@ const Navigation = () => {
     setOpen(false);
   };
 
-  console.log('first', images)
-
   const handleSubmit = (e) => {
     e.preventDefault()
     setOpen(false);
@@ -46,9 +44,6 @@ const Navigation = () => {
       url
     }).then(res => {
       setRender((prevState) => !prevState)
-      // setLoading(false)
-      // window.location.reload()
-      console.log('second', images)
     })
   }
 
@@ -92,7 +87,14 @@ const Navigation = () => {
         {images && (
           images.data.map((image, index) => (
             <div key={index} className={classes.gridItem}>
-              <button data-id={image._id} className={classes.button} onClick={handleDeleteImage}>Delete</button>
+              <button 
+                data-id={image._id} 
+                className={classes.button} 
+                onClick={handleDeleteImage}
+                style={{ display: 'none'}}
+              >
+                Delete
+              </button>
               <img 
                 src={image.url} 
                 alt={image.label}
@@ -100,7 +102,7 @@ const Navigation = () => {
                 className={classes.image}
                 style={{ width: '200px', height: '200px'}}
               />
-              <p className={classes.label}>{image.label}</p>
+              <p className={classes.label} style={{ display: 'none'}}>{image.label}</p>
             </div>
           )) 
         )}
@@ -139,6 +141,16 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     maxWidth: '16rem',
     position: 'relative',
+    '&:hover': {
+      '& $button': {
+        display: 'block !important',
+        transition: 'width 2s linear 1s'
+      },
+      '& $label': {
+        display: 'block !important',
+        transition: 'width 2s linear 1s'
+      }
+    }
   },
   button: {
     position: 'absolute',

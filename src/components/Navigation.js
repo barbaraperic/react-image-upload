@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from './Button'
@@ -59,11 +59,22 @@ const Navigation = () => {
     })
   }
 
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+  }
+
+  const initialRender = useRef(true);
+  useEffect(() => {
+    if (initialRender.current) {
+      initialRender.current = false;
+    } else {
+      console.log(images.data.filter(image => image.label === search))
+    }
+  }, [search]);
+
   if(loading) {
     return <p>Loading</p>
   }
-
-  console.log('search', search)
 
   return (
     <React.Fragment>
@@ -73,7 +84,7 @@ const Navigation = () => {
           <Search 
             placeholder="Search by label"
             className={classes.search} 
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearch}
             value={search}
           />
         </div>
@@ -92,7 +103,7 @@ const Navigation = () => {
         </form>
        </Modal>
        <div className={classes.layout}>
-        {images && (
+        {/* {images && (
           images.data.map((image, index) => (
             <div key={index} className={classes.gridItem}>
               <button 
@@ -113,7 +124,7 @@ const Navigation = () => {
               <p className={classes.label} style={{ display: 'none'}}>{image.label}</p>
             </div>
           )) 
-        )}
+        )} */}
        </div>
     </React.Fragment>
   )

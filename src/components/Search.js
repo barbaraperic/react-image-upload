@@ -26,7 +26,6 @@ const Search = ({ placeholder, onChange, value }) => {
 
 const useStyles = makeStyles(() => ({
   root: {
-    padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
     width: 300,

@@ -20,13 +20,17 @@ const Navigation = () => {
 
   const classes = useStyles();
 
-  useEffect(() => {
+  const getImages = () => {
     axios.get('/images').then(result => {
-      setImages(result)
+      setImages(result.data)
       setLoading(false)
     }).catch(error => {
       setError(true)
     })
+  }
+
+  useEffect(() => {
+    getImages()
   }, [render])
   
   const handleOpen = () => {
@@ -61,6 +65,9 @@ const Navigation = () => {
 
   const handleSearch = (e) => {
     setSearch(e.target.value)
+    if (search.length <= 1 ) {
+      getImages()
+    }
   }
 
   const initialRender = useRef(true);
@@ -68,12 +75,18 @@ const Navigation = () => {
     if (initialRender.current) {
       initialRender.current = false;
     } else {
-      console.log(images.data.filter(image => image.label === search))
+      const filterImages = images.filter(image => image.label === search)
+      if (filterImages.length > 0) {
+        setImages(filterImages)
+      }
     }
   }, [search]);
 
+  const totalImages = Object.keys(images).length
+  console.log('images',images)
+
   if(loading) {
-    return <p>Loading</p>
+    return <p style={{ textAlign: 'center'}}>Loading</p>
   }
 
   return (
@@ -103,8 +116,8 @@ const Navigation = () => {
         </form>
        </Modal>
        <div className={classes.layout}>
-        {/* {images && (
-          images.data.map((image, index) => (
+        {totalImages > 0 && (
+          images.map((image, index) => (
             <div key={index} className={classes.gridItem}>
               <button 
                 data-id={image._id} 
@@ -124,7 +137,7 @@ const Navigation = () => {
               <p className={classes.label} style={{ display: 'none'}}>{image.label}</p>
             </div>
           )) 
-        )} */}
+        )}
        </div>
     </React.Fragment>
   )

@@ -33,6 +33,8 @@ app.get('/images', controller.getImages)
 
 app.delete('/image-delete', controller.deleteImage)
 
+app.get('/image-label', controller.getImageWithLabel)
+
 // catch 404 and forward to error handler
 
 connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`)

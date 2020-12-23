@@ -1,3 +1,4 @@
+const { responsiveFontSizes } = require('@material-ui/core')
 const Image = require('../models/image.model')
 
 exports.upload = (req, res) => {
@@ -30,4 +31,10 @@ exports.deleteImage = (req, res) => {
     else 
       res.send({ message: 'is deleted'});
   })
+}
+
+exports.getImageWithLabel = (req, res) => {
+  Image.find({ label: req.body.label})
+    .then(image => res.send(image))
+    .catch(err => res.send(err))
 }

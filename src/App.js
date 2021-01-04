@@ -1,12 +1,12 @@
 import './App.css';
 // import Modal from './components/Modal'
 // import Form from './components/Form'
-import Navigation from './components/Navigation'
+import Home from './components/Home'
 
 function App() {
   return (
     <div>
-      <Navigation />
+      <Home />
       {/* <Form /> */}
       {/* <Modal /> */}
     </div>

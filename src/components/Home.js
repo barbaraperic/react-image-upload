@@ -7,7 +7,7 @@ import Modal from './Modal'
 import Input from './Input'
 import logoIcon from '../images/logo.svg'
 
-const Navigation = () => {
+const Home = () => {
 
   const [ open, setOpen ] = useState(false);
   const [ label, setLabel ] = useState('')
@@ -115,10 +115,10 @@ const Navigation = () => {
           </div>
         </form>
        </Modal>
-       <div className={classes.layout}>
+       <div className={classes.layout} >
         {totalImages > 0 && (
           images.map((image, index) => (
-            <div key={index} className={classes.gridItem}>
+            <div key={index} className={classes.gridItem} >
               <button 
                 data-id={image._id} 
                 className={classes.button} 
@@ -211,4 +211,4 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export default Navigation
+export default Home
